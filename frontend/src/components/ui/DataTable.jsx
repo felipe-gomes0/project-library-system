@@ -1,0 +1,58 @@
+import { Children, isValidElement } from 'react';
+import EmptyState from './EmptyState';
+
+// Compound component baseado em composição declarativa de colunas.
+// As colunas são declaradas como filhos <DataTable.Column>, e a própria
+// tabela lê essas definições para montar o cabeçalho e renderizar cada célula.
+//
+// Uso:
+//   <DataTable items={books} rowKey="id" empty={<EmptyState .../>}>
+//     <DataTable.Column header="Título" render={(b) => <strong>{b.title}</strong>} />
+//     <DataTable.Column header="Autor" field="author" />
+//     <DataTable.Column header="Ações" align="center" render={(b) => <Button .../>} />
+//   </DataTable>
+//
+// <DataTable.Column> é apenas um "marcador" declarativo — nunca é renderizado
+// diretamente; serve para descrever a coluna.
+function Column() {
+  return null;
+}
+
+export default function DataTable({ items, rowKey = 'id', empty, children }) {
+  const columns = Children.toArray(children)
+    .filter((child) => isValidElement(child) && child.type === Column)
+    .map((child) => child.props);
+
+  if (!items || items.length === 0) {
+    return empty || <EmptyState title="Nenhum registro encontrado" />;
+  }
+
+  const cellValue = (col, item) => (col.render ? col.render(item) : item[col.field]);
+
+  return (
+    <table className="table">
+      <thead>
+        <tr>
+          {columns.map((col, i) => (
+            <th key={col.header || i} className={col.align === 'center' ? 'center' : ''}>
+              {col.header}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      <tbody>
+        {items.map((item) => (
+          <tr key={item[rowKey]}>
+            {columns.map((col, i) => (
+              <td key={col.header || i} className={col.align === 'center' ? 'center' : ''}>
+                {cellValue(col, item)}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+}
+
+DataTable.Column = Column;
