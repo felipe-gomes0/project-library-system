@@ -1,4 +1,3 @@
-// Normaliza parâmetros de paginação a partir da query string
 function getPagination(query) {
   let page = parseInt(query.page, 10);
   let limit = parseInt(query.limit, 10);
@@ -11,7 +10,6 @@ function getPagination(query) {
   return { page, limit, offset };
 }
 
-// Monta a resposta paginada padrão
 function buildPage({ count, rows, page, limit }) {
   return {
     data: rows,

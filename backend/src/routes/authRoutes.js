@@ -7,7 +7,6 @@ const { ROLES, ROLE_VALUES } = require('../utils/constants');
 
 const router = Router();
 
-// Cadastro de usuários do sistema (somente admin)
 router.post(
   '/register',
   authenticate,

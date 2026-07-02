@@ -1,5 +1,3 @@
-// Barrel: ponto único de importação dos componentes de composição.
-// Ex.: import { Page, Card, DataTable, Modal, Button } from '../components/ui';
 export { default as Button } from './Button';
 export { default as Card } from './Card';
 export { default as Modal } from './Modal';

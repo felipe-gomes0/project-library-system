@@ -9,10 +9,8 @@ const router = Router();
 
 router.use(authenticate);
 
-// Listagem: todos os perfis (leitor vê apenas os próprios)
 router.get('/', loanController.list);
 
-// Atrasados: admin e bibliotecário
 router.get('/overdue', authorize(ROLES.ADMIN, ROLES.LIBRARIAN), loanController.overdue);
 
 router.get(
@@ -21,7 +19,6 @@ router.get(
   loanController.getById
 );
 
-// Registrar empréstimo: admin e bibliotecário
 router.post(
   '/',
   authorize(ROLES.ADMIN, ROLES.LIBRARIAN),
@@ -41,7 +38,6 @@ router.post(
   loanController.create
 );
 
-// Registrar devolução: admin e bibliotecário
 router.patch(
   '/:id/return',
   authorize(ROLES.ADMIN, ROLES.LIBRARIAN),
@@ -49,7 +45,6 @@ router.patch(
   loanController.returnLoan
 );
 
-// Excluir empréstimo devolvido: somente admin
 router.delete(
   '/:id',
   authorize(ROLES.ADMIN),

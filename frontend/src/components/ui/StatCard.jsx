@@ -1,4 +1,3 @@
-// Cartão de indicador. Conteúdo principal por props; permite extras por children.
 export default function StatCard({ icon, label, value, accent = 'blue', children }) {
   return (
     <div className={`stat-card stat-${accent}`}>

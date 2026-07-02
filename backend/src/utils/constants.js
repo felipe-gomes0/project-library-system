@@ -1,4 +1,3 @@
-// Perfis de usuário do sistema
 const ROLES = {
   ADMIN: 'admin',
   LIBRARIAN: 'librarian',
@@ -7,19 +6,16 @@ const ROLES = {
 
 const ROLE_VALUES = Object.values(ROLES);
 
-// Status de livro
 const BOOK_STATUS = {
   AVAILABLE: 'available',
   UNAVAILABLE: 'unavailable',
 };
 
-// Status de leitor
 const READER_STATUS = {
   ACTIVE: 'active',
   INACTIVE: 'inactive',
 };
 
-// Status de empréstimo
 const LOAN_STATUS = {
   OPEN: 'open',
   RETURNED: 'returned',

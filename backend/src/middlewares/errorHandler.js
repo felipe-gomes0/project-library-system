@@ -2,15 +2,11 @@ const { ValidationError, UniqueConstraintError, DatabaseError } = require('seque
 const AppError = require('../utils/AppError');
 const env = require('../config/env');
 
-// Rota não encontrada
 function notFound(req, res, next) {
   next(new AppError(`Rota não encontrada: ${req.method} ${req.originalUrl}`, 404));
 }
 
-// Tratamento central de erros
-// eslint-disable-next-line no-unused-vars
 function errorHandler(err, req, res, next) {
-  // Erros de validação / unicidade do Sequelize -> 422
   if (err instanceof ValidationError || err instanceof UniqueConstraintError) {
     const details = err.errors.map((e) => ({ field: e.path, message: e.message }));
     return res.status(422).json({

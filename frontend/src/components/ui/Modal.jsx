@@ -1,15 +1,6 @@
 import { createContext, useContext } from 'react';
 import Button from './Button';
 
-// Compound component com Context: o Modal compartilha onClose com seus
-// subcomponentes (ex.: Modal.CloseButton), sem precisar repassar props.
-// Uso:
-//   <Modal onClose={close} title="...">
-//     <Modal.Body>...</Modal.Body>
-//     <Modal.Footer>
-//       <Button onClick={close}>Cancelar</Button>
-//     </Modal.Footer>
-//   </Modal>
 const ModalContext = createContext(null);
 
 export default function Modal({ title, onClose, wide = false, children }) {
@@ -48,7 +39,6 @@ function CloseButton() {
   );
 }
 
-// Botão de cancelar pronto, que já conhece o onClose do modal por contexto
 function CancelButton({ children = 'Cancelar' }) {
   const { onClose } = useContext(ModalContext);
   return (

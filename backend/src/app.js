@@ -18,16 +18,13 @@ if (env.nodeEnv === 'development') {
   app.use(morgan('dev'));
 }
 
-// Documentação Swagger
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
   customSiteTitle: 'API Biblioteca - Documentação',
 }));
 app.get('/api-docs.json', (req, res) => res.json(swaggerSpec));
 
-// Rotas da API
 app.use('/api', routes);
 
-// Raiz
 app.get('/', (req, res) => {
   res.json({
     status: 'success',
@@ -37,7 +34,6 @@ app.get('/', (req, res) => {
   });
 });
 
-// 404 + tratamento central de erros
 app.use(notFound);
 app.use(errorHandler);
 

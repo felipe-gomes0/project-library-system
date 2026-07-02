@@ -6,17 +6,12 @@ const Book = require('./Book');
 const Loan = require('./Loan');
 const LoanItem = require('./LoanItem');
 
-// ===== Associações =====
-
-// Um leitor pode (opcionalmente) ter uma conta de login
 User.hasOne(Reader, { foreignKey: 'user_id', as: 'readerProfile' });
 Reader.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 
-// Um leitor possui vários empréstimos
 Reader.hasMany(Loan, { foreignKey: 'reader_id', as: 'loans' });
 Loan.belongsTo(Reader, { foreignKey: 'reader_id', as: 'reader' });
 
-// Um empréstimo possui um ou mais livros (N:N via loan_items)
 Loan.belongsToMany(Book, {
   through: LoanItem,
   foreignKey: 'loan_id',
@@ -30,7 +25,6 @@ Book.belongsToMany(Loan, {
   as: 'loans',
 });
 
-// Acesso direto aos itens do empréstimo
 Loan.hasMany(LoanItem, { foreignKey: 'loan_id', as: 'items' });
 LoanItem.belongsTo(Loan, { foreignKey: 'loan_id', as: 'loan' });
 LoanItem.belongsTo(Book, { foreignKey: 'book_id', as: 'book' });

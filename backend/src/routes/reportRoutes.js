@@ -5,7 +5,6 @@ const { ROLES } = require('../utils/constants');
 
 const router = Router();
 
-// Relatórios: admin e bibliotecário
 router.use(authenticate, authorize(ROLES.ADMIN, ROLES.LIBRARIAN));
 
 router.get('/summary', reportController.summary);

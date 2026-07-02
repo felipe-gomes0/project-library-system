@@ -1,19 +1,6 @@
 import { Children, isValidElement } from 'react';
 import EmptyState from './EmptyState';
 
-// Compound component baseado em composição declarativa de colunas.
-// As colunas são declaradas como filhos <DataTable.Column>, e a própria
-// tabela lê essas definições para montar o cabeçalho e renderizar cada célula.
-//
-// Uso:
-//   <DataTable items={books} rowKey="id" empty={<EmptyState .../>}>
-//     <DataTable.Column header="Título" render={(b) => <strong>{b.title}</strong>} />
-//     <DataTable.Column header="Autor" field="author" />
-//     <DataTable.Column header="Ações" align="center" render={(b) => <Button .../>} />
-//   </DataTable>
-//
-// <DataTable.Column> é apenas um "marcador" declarativo — nunca é renderizado
-// diretamente; serve para descrever a coluna.
 function Column() {
   return null;
 }

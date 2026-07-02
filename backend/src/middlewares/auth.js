@@ -2,7 +2,6 @@ const { verifyToken } = require('../utils/jwt');
 const AppError = require('../utils/AppError');
 const { User } = require('../models');
 
-// Verifica o token JWT no header Authorization: Bearer <token>
 async function authenticate(req, res, next) {
   try {
     const header = req.headers.authorization || '';
@@ -24,7 +23,6 @@ async function authenticate(req, res, next) {
       throw new AppError('Usuário não encontrado ou inativo.', 401);
     }
 
-    // Disponibiliza o usuário autenticado nas próximas etapas
     req.user = user;
     next();
   } catch (err) {
@@ -32,7 +30,6 @@ async function authenticate(req, res, next) {
   }
 }
 
-// Restringe a rota a determinados perfis (ex.: authorize('admin', 'librarian'))
 function authorize(...roles) {
   return (req, res, next) => {
     if (!req.user) {

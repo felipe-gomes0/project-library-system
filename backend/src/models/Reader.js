@@ -16,7 +16,6 @@ Reader.init(
       allowNull: false,
       validate: { notEmpty: { msg: 'O nome é obrigatório' } },
     },
-    // CPF ou RA (Registro Acadêmico) - identificador único do leitor
     document: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -42,7 +41,6 @@ Reader.init(
       allowNull: false,
       defaultValue: READER_STATUS.ACTIVE,
     },
-    // Vínculo opcional com uma conta de login (User com role=reader)
     user_id: {
       type: DataTypes.INTEGER,
       allowNull: true,

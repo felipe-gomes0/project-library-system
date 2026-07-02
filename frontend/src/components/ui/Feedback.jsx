@@ -1,5 +1,3 @@
-// Componentes de feedback (badge, alerta, spinner).
-
 export function Badge({ kind = 'info', children }) {
   return <span className={`badge badge-${kind}`}>{children}</span>;
 }

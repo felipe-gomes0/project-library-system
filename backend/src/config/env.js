@@ -5,15 +5,13 @@ const env = {
   nodeEnv: process.env.NODE_ENV || 'development',
 
   db: {
-    // postgres (padrão do projeto) | mysql | sqlite (apenas para testes locais)
     dialect: (process.env.DB_DIALECT || 'postgres').toLowerCase(),
-    storage: process.env.DB_STORAGE || './data/biblioteca.sqlite', // usado só no sqlite
+    storage: process.env.DB_STORAGE || './data/biblioteca.sqlite',
     host: process.env.DB_HOST || 'localhost',
     port: parseInt(process.env.DB_PORT, 10) || 5432,
     name: process.env.DB_NAME || 'biblioteca',
     user: process.env.DB_USER || 'biblioteca',
     pass: process.env.DB_PASS || 'biblioteca',
-    // none | alter | force
     sync: (process.env.DB_SYNC || 'alter').toLowerCase(),
   },
 

@@ -5,8 +5,6 @@ const asyncHandler = require('../utils/asyncHandler');
 const { getPagination, buildPage } = require('../utils/pagination');
 const { READER_STATUS } = require('../utils/constants');
 
-// GET /api/readers
-// Filtros: name, document (CPF/RA), status, q (busca geral)
 exports.list = asyncHandler(async (req, res) => {
   const { page, limit, offset } = getPagination(req.query);
   const { name, document, status, q } = req.query;
@@ -33,14 +31,12 @@ exports.list = asyncHandler(async (req, res) => {
   res.json({ status: 'success', ...buildPage({ count, rows, page, limit }) });
 });
 
-// GET /api/readers/:id
 exports.getById = asyncHandler(async (req, res) => {
   const reader = await Reader.findByPk(req.params.id);
   if (!reader) throw new AppError('Leitor não encontrado.', 404);
   res.json({ status: 'success', data: reader });
 });
 
-// POST /api/readers
 exports.create = asyncHandler(async (req, res) => {
   const { name, document, email, phone, address, status, userId } = req.body;
   const reader = await Reader.create({
@@ -55,7 +51,6 @@ exports.create = asyncHandler(async (req, res) => {
   res.status(201).json({ status: 'success', message: 'Leitor cadastrado com sucesso.', data: reader });
 });
 
-// PUT /api/readers/:id
 exports.update = asyncHandler(async (req, res) => {
   const reader = await Reader.findByPk(req.params.id);
   if (!reader) throw new AppError('Leitor não encontrado.', 404);
@@ -69,7 +64,6 @@ exports.update = asyncHandler(async (req, res) => {
   res.json({ status: 'success', message: 'Leitor atualizado com sucesso.', data: reader });
 });
 
-// PATCH /api/readers/:id/inactivate
 exports.inactivate = asyncHandler(async (req, res) => {
   const reader = await Reader.findByPk(req.params.id);
   if (!reader) throw new AppError('Leitor não encontrado.', 404);
@@ -78,7 +72,6 @@ exports.inactivate = asyncHandler(async (req, res) => {
   res.json({ status: 'success', message: 'Leitor inativado.', data: reader });
 });
 
-// PATCH /api/readers/:id/activate
 exports.activate = asyncHandler(async (req, res) => {
   const reader = await Reader.findByPk(req.params.id);
   if (!reader) throw new AppError('Leitor não encontrado.', 404);
@@ -87,7 +80,6 @@ exports.activate = asyncHandler(async (req, res) => {
   res.json({ status: 'success', message: 'Leitor ativado.', data: reader });
 });
 
-// DELETE /api/readers/:id  (somente admin)
 exports.remove = asyncHandler(async (req, res) => {
   const reader = await Reader.findByPk(req.params.id);
   if (!reader) throw new AppError('Leitor não encontrado.', 404);
@@ -103,7 +95,6 @@ exports.remove = asyncHandler(async (req, res) => {
   res.json({ status: 'success', message: 'Leitor excluído com sucesso.' });
 });
 
-// GET /api/readers/:id/loans  (histórico de empréstimos do leitor)
 exports.loanHistory = asyncHandler(async (req, res) => {
   const reader = await Reader.findByPk(req.params.id);
   if (!reader) throw new AppError('Leitor não encontrado.', 404);

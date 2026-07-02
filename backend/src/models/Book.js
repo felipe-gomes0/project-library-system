@@ -3,7 +3,6 @@ const sequelize = require('../config/database');
 const { BOOK_STATUS } = require('../utils/constants');
 
 class Book extends Model {
-  // Recalcula o status com base na quantidade disponível
   refreshStatus() {
     this.status =
       this.availableQuantity > 0 ? BOOK_STATUS.AVAILABLE : BOOK_STATUS.UNAVAILABLE;

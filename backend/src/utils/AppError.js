@@ -1,4 +1,3 @@
-// Erro de aplicação com status HTTP, capturado pelo errorHandler central
 class AppError extends Error {
   constructor(message, statusCode = 400, details = undefined) {
     super(message);

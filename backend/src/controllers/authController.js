@@ -4,7 +4,6 @@ const AppError = require('../utils/AppError');
 const asyncHandler = require('../utils/asyncHandler');
 const { ROLES, ROLE_VALUES } = require('../utils/constants');
 
-// POST /api/auth/register  (somente admin cria usuários do sistema)
 exports.register = asyncHandler(async (req, res) => {
   const { name, email, password, role } = req.body;
 
@@ -19,7 +18,6 @@ exports.register = asyncHandler(async (req, res) => {
   });
 });
 
-// POST /api/auth/login
 exports.login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -43,7 +41,6 @@ exports.login = asyncHandler(async (req, res) => {
   });
 });
 
-// GET /api/auth/me  (dados do usuário autenticado)
 exports.me = asyncHandler(async (req, res) => {
   res.json({ status: 'success', data: req.user });
 });

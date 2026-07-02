@@ -1,6 +1,5 @@
 import Button from './Button';
 
-// Paginação reutilizável. Não renderiza nada quando há só uma página.
 export default function Pagination({ page, totalPages, onChange }) {
   if (!totalPages || totalPages <= 1) return null;
 

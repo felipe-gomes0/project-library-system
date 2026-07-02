@@ -3,11 +3,9 @@ const { Book, Reader, Loan } = require('../models');
 const asyncHandler = require('../utils/asyncHandler');
 const { LOAN_STATUS, READER_STATUS, BOOK_STATUS } = require('../utils/constants');
 
-// GET /api/reports/summary  (relatório geral - admin/bibliotecário)
 exports.summary = asyncHandler(async (req, res) => {
   const today = new Date().toISOString().slice(0, 10);
 
-  // Mantém os atrasados atualizados antes de contar
   await Loan.update(
     { status: LOAN_STATUS.LATE },
     { where: { status: LOAN_STATUS.OPEN, dueDate: { [Op.lt]: today } } }
@@ -53,7 +51,6 @@ exports.summary = asyncHandler(async (req, res) => {
   });
 });
 
-// GET /api/reports/popular-books  (livros mais emprestados)
 exports.popularBooks = asyncHandler(async (req, res) => {
   const limit = Math.min(parseInt(req.query.limit, 10) || 5, 50);
 

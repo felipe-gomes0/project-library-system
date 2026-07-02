@@ -7,7 +7,6 @@ const { ROLES, ROLE_VALUES } = require('../utils/constants');
 
 const router = Router();
 
-// Gerenciamento de usuários do sistema é exclusivo do administrador
 router.use(authenticate, authorize(ROLES.ADMIN));
 
 router.get('/', userController.list);

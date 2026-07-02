@@ -7,10 +7,8 @@ const { ROLES } = require('../utils/constants');
 
 const router = Router();
 
-// Todas as rotas de livros exigem autenticação
 router.use(authenticate);
 
-// Consulta liberada a qualquer usuário autenticado (leitor vê só disponíveis)
 router.get('/', bookController.list);
 router.get('/categories', bookController.categories);
 router.get(
@@ -19,7 +17,6 @@ router.get(
   bookController.getById
 );
 
-// Escrita: admin e bibliotecário
 router.post(
   '/',
   authorize(ROLES.ADMIN, ROLES.LIBRARIAN),
@@ -46,7 +43,6 @@ router.put(
   bookController.update
 );
 
-// Exclusão: somente admin
 router.delete(
   '/:id',
   authorize(ROLES.ADMIN),

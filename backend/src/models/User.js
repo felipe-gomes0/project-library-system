@@ -4,12 +4,10 @@ const sequelize = require('../config/database');
 const { ROLE_VALUES, ROLES } = require('../utils/constants');
 
 class User extends Model {
-  // Compara uma senha em texto puro com o hash armazenado
   async checkPassword(plainPassword) {
     return bcrypt.compare(plainPassword, this.password);
   }
 
-  // Remove a senha ao serializar para JSON
   toJSON() {
     const values = { ...this.get() };
     delete values.password;
@@ -55,7 +53,6 @@ User.init(
     modelName: 'User',
     tableName: 'users',
     hooks: {
-      // Faz o hash da senha sempre que ela for definida/alterada
       beforeSave: async (user) => {
         if (user.changed('password')) {
           user.password = await bcrypt.hash(user.password, 10);

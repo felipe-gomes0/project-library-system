@@ -7,13 +7,11 @@ const { LOAN_STATUS, READER_STATUS, ROLES } = require('../utils/constants');
 
 const DEFAULT_LOAN_DAYS = 14;
 
-// Inclui leitor e livros na resposta
 const loanInclude = [
   { model: Reader, as: 'reader' },
   { model: Book, as: 'books', through: { attributes: ['quantity'] } },
 ];
 
-// Atualiza para "late" os empréstimos em aberto cuja data prevista já passou
 async function refreshOverdueLoans() {
   const today = new Date().toISOString().slice(0, 10);
   await Loan.update(
@@ -27,14 +25,11 @@ async function refreshOverdueLoans() {
   );
 }
 
-// Localiza o perfil de leitor vinculado ao usuário logado (role=reader)
 async function getOwnReaderId(user) {
   const reader = await Reader.findOne({ where: { user_id: user.id } });
   return reader ? reader.id : null;
 }
 
-// GET /api/loans
-// Filtros: status, readerId, from, to (intervalo sobre loanDate)
 exports.list = asyncHandler(async (req, res) => {
   await refreshOverdueLoans();
 
@@ -50,7 +45,6 @@ exports.list = asyncHandler(async (req, res) => {
     if (to) where.loanDate[Op.lte] = to;
   }
 
-  // Leitor só enxerga os próprios empréstimos
   if (req.user.role === ROLES.READER) {
     const ownReaderId = await getOwnReaderId(req.user);
     if (!ownReaderId) {
@@ -71,7 +65,6 @@ exports.list = asyncHandler(async (req, res) => {
   res.json({ status: 'success', ...buildPage({ count, rows, page, limit }) });
 });
 
-// GET /api/loans/:id
 exports.getById = asyncHandler(async (req, res) => {
   await refreshOverdueLoans();
 
@@ -88,12 +81,9 @@ exports.getById = asyncHandler(async (req, res) => {
   res.json({ status: 'success', data: loan });
 });
 
-// POST /api/loans
-// body: { readerId, items: [{ bookId, quantity }] }  ou  { readerId, bookIds: [..] }
 exports.create = asyncHandler(async (req, res) => {
   const { readerId, loanDate, dueDate } = req.body;
 
-  // Normaliza os itens (aceita bookIds simples ou items com quantidade)
   let items = [];
   if (Array.isArray(req.body.items) && req.body.items.length) {
     items = req.body.items.map((i) => ({ bookId: i.bookId, quantity: Number(i.quantity) || 1 }));
@@ -105,7 +95,6 @@ exports.create = asyncHandler(async (req, res) => {
     throw new AppError('Informe ao menos um livro para o empréstimo.', 422);
   }
 
-  // Regra: leitor precisa existir e estar ativo
   const reader = await Reader.findByPk(readerId);
   if (!reader) throw new AppError('Leitor não encontrado.', 404);
   if (reader.status !== READER_STATUS.ACTIVE) {
@@ -123,7 +112,6 @@ exports.create = asyncHandler(async (req, res) => {
     throw new AppError('A data prevista de devolução deve ser posterior à data do empréstimo.', 422);
   }
 
-  // Tudo dentro de uma transação para garantir consistência do estoque
   const loan = await sequelize.transaction(async (t) => {
     const created = await Loan.create(
       { reader_id: reader.id, loanDate: start, dueDate: due, status: LOAN_STATUS.OPEN },
@@ -145,7 +133,6 @@ exports.create = asyncHandler(async (req, res) => {
         { transaction: t }
       );
 
-      // Regra: ao emprestar, a quantidade disponível diminui
       book.availableQuantity -= item.quantity;
       book.refreshStatus();
       await book.save({ transaction: t });
@@ -158,7 +145,6 @@ exports.create = asyncHandler(async (req, res) => {
   res.status(201).json({ status: 'success', message: 'Empréstimo registrado com sucesso.', data: full });
 });
 
-// PATCH /api/loans/:id/return  (registrar devolução)
 exports.returnLoan = asyncHandler(async (req, res) => {
   const loan = await Loan.findByPk(req.params.id, {
     include: [{ model: LoanItem, as: 'items' }],
@@ -172,7 +158,6 @@ exports.returnLoan = asyncHandler(async (req, res) => {
     for (const item of loan.items) {
       const book = await Book.findByPk(item.book_id, { transaction: t, lock: t.LOCK.UPDATE });
       if (book) {
-        // Regra: ao devolver, a quantidade disponível aumenta
         book.availableQuantity = Math.min(book.totalQuantity, book.availableQuantity + item.quantity);
         book.refreshStatus();
         await book.save({ transaction: t });
@@ -188,7 +173,6 @@ exports.returnLoan = asyncHandler(async (req, res) => {
   res.json({ status: 'success', message: 'Devolução registrada com sucesso.', data: full });
 });
 
-// GET /api/loans/overdue  (empréstimos atrasados)
 exports.overdue = asyncHandler(async (req, res) => {
   await refreshOverdueLoans();
   const loans = await Loan.findAll({
@@ -199,7 +183,6 @@ exports.overdue = asyncHandler(async (req, res) => {
   res.json({ status: 'success', data: loans });
 });
 
-// DELETE /api/loans/:id  (somente admin; apenas empréstimos já devolvidos)
 exports.remove = asyncHandler(async (req, res) => {
   const loan = await Loan.findByPk(req.params.id);
   if (!loan) throw new AppError('Empréstimo não encontrado.', 404);

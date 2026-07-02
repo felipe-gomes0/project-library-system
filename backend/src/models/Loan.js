@@ -3,7 +3,6 @@ const sequelize = require('../config/database');
 const { LOAN_STATUS } = require('../utils/constants');
 
 class Loan extends Model {
-  // Indica se o empréstimo está atrasado (em aberto e passou da data prevista)
   get isLate() {
     if (this.status === LOAN_STATUS.RETURNED) return false;
     return new Date() > new Date(this.dueDate);

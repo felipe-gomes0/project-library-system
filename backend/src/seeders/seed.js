@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const env = require('../config/env');
 const db = require('../models');
 const { ROLES, READER_STATUS, BOOK_STATUS } = require('../utils/constants');
@@ -9,25 +8,20 @@ async function seed() {
   await sequelize.authenticate();
   console.log('✅ Conectado ao banco.');
 
-  // Em seed, recriamos as tabelas a menos que DB_SYNC=none
   const force = env.db.sync === 'force';
   await sequelize.sync({ force, alter: !force && env.db.sync === 'alter' });
   console.log(force ? '⚠️  Tabelas recriadas (force).' : '✅ Tabelas sincronizadas.');
 
-  // ===== Usuários do sistema =====
-  // 1 Administrador (credenciais vêm do .env)
   const [admin] = await User.findOrCreate({
     where: { email: env.admin.email },
     defaults: { name: env.admin.name, password: env.admin.password, role: ROLES.ADMIN },
   });
 
-  // 1 Bibliotecário
   const [librarian] = await User.findOrCreate({
     where: { email: 'bibliotecario@biblioteca.com' },
     defaults: { name: 'Maria Bibliotecária', password: 'biblio123', role: ROLES.LIBRARIAN },
   });
 
-  // 2 Leitores (com conta de login)
   const [readerUser1] = await User.findOrCreate({
     where: { email: 'joao@aluno.com' },
     defaults: { name: 'João da Silva', password: 'leitor123', role: ROLES.READER },
@@ -37,7 +31,6 @@ async function seed() {
     defaults: { name: 'Ana Souza', password: 'leitor123', role: ROLES.READER },
   });
 
-  // ===== Perfis de leitor (vinculados às contas) =====
   await Reader.findOrCreate({
     where: { document: '111.111.111-11' },
     defaults: {
@@ -60,7 +53,6 @@ async function seed() {
       user_id: readerUser2.id,
     },
   });
-  // Um leitor extra sem login (gerenciado pela biblioteca)
   await Reader.findOrCreate({
     where: { document: '333.333.333-33' },
     defaults: {
@@ -72,7 +64,6 @@ async function seed() {
     },
   });
 
-  // ===== Livros de exemplo =====
   const books = [
     { title: 'Dom Casmurro', author: 'Machado de Assis', publisher: 'Editora Brasil', publicationYear: 1899, category: 'Romance', isbn: '978-85-359-0277-1', totalQuantity: 5 },
     { title: 'O Cortiço', author: 'Aluísio Azevedo', publisher: 'Ática', publicationYear: 1890, category: 'Romance', isbn: '978-85-359-0277-2', totalQuantity: 3 },

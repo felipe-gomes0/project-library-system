@@ -1,5 +1,3 @@
-// Botão base. Composição por variação: a aparência vem das props,
-// o conteúdo vem por children (ícone + texto, só texto, etc.).
 export default function Button({
   variant = 'default',
   size,

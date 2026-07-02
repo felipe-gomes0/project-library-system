@@ -1,12 +1,3 @@
-// Composição de layout de página. O cabeçalho recebe título/subtítulo e,
-// por children, os botões de ação (slot de ações).
-// Uso:
-//   <Page>
-//     <Page.Header title="Livros" subtitle="Acervo">
-//       <Button variant="primary">+ Novo</Button>
-//     </Page.Header>
-//     ...conteúdo...
-//   </Page>
 export default function Page({ children }) {
   return <div className="page">{children}</div>;
 }

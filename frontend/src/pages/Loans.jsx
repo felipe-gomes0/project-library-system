@@ -25,13 +25,25 @@ export default function Loans() {
   const [error, setError] = useState('');
   const [status, setStatus] = useState('');
   const [page, setPage] = useState(1);
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
+  const [filterReaderId, setFilterReaderId] = useState('');
+  const [readers, setReaders] = useState([]);
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [readers, setReaders] = useState([]);
+  const [modalReaders, setModalReaders] = useState([]);
   const [books, setBooks] = useState([]);
   const [form, setForm] = useState({ readerId: '', bookIds: [], dueDate: '' });
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState('');
+
+  // Carrega lista de leitores para o filtro (apenas staff)
+  useEffect(() => {
+    if (!isStaff) return;
+    readerService.list({ limit: 100 })
+      .then((r) => setReaders(r.data.data))
+      .catch(() => {});
+  }, [isStaff]);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -39,6 +51,9 @@ export default function Loans() {
     try {
       const params = { page, limit: 10 };
       if (status) params.status = status;
+      if (dateFrom) params.from = dateFrom;
+      if (dateTo) params.to = dateTo;
+      if (filterReaderId) params.readerId = filterReaderId;
       const { data } = await loanService.list(params);
       setLoans(data.data);
       setPagination(data.pagination);
@@ -47,7 +62,7 @@ export default function Loans() {
     } finally {
       setLoading(false);
     }
-  }, [status, page]);
+  }, [status, page, dateFrom, dateTo, filterReaderId]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -60,7 +75,7 @@ export default function Loans() {
         readerService.list({ status: 'active', limit: 100 }),
         bookService.list({ available: 'true', limit: 100 }),
       ]);
-      setReaders(r.data.data);
+      setModalReaders(r.data.data);
       setBooks(b.data.data);
     } catch (err) {
       setFormError(getApiError(err));
@@ -135,6 +150,20 @@ export default function Loans() {
           <option value="late">Atrasados</option>
           <option value="returned">Devolvidos</option>
         </Select>
+        {isStaff && (
+          <Select value={filterReaderId} onChange={(e) => { setPage(1); setFilterReaderId(e.target.value); }}>
+            <option value="">Todos os leitores</option>
+            {readers.map((r) => (
+              <option key={r.id} value={r.id}>{r.name} — {r.document}</option>
+            ))}
+          </Select>
+        )}
+        <Field label="De">
+          <input type="date" value={dateFrom} onChange={(e) => { setPage(1); setDateFrom(e.target.value); }} />
+        </Field>
+        <Field label="Até">
+          <input type="date" value={dateTo} onChange={(e) => { setPage(1); setDateTo(e.target.value); }} />
+        </Field>
       </Toolbar>
 
       {loading ? (
@@ -180,7 +209,7 @@ export default function Loans() {
                 <Field label="Leitor" required>
                   <Select value={form.readerId} onChange={(e) => setForm({ ...form, readerId: e.target.value })} required>
                     <option value="">Selecione...</option>
-                    {readers.map((r) => (
+                    {modalReaders.map((r) => (
                       <option key={r.id} value={r.id}>{r.name} — {r.document}</option>
                     ))}
                   </Select>

@@ -5,7 +5,6 @@ const asyncHandler = require('../utils/asyncHandler');
 const { getPagination, buildPage } = require('../utils/pagination');
 const { ROLES, ROLE_VALUES } = require('../utils/constants');
 
-// GET /api/users  (somente admin)
 exports.list = asyncHandler(async (req, res) => {
   const { page, limit, offset } = getPagination(req.query);
   const { role, q } = req.query;
@@ -29,14 +28,12 @@ exports.list = asyncHandler(async (req, res) => {
   res.json({ status: 'success', ...buildPage({ count, rows, page, limit }) });
 });
 
-// GET /api/users/:id
 exports.getById = asyncHandler(async (req, res) => {
   const user = await User.findByPk(req.params.id);
   if (!user) throw new AppError('Usuário não encontrado.', 404);
   res.json({ status: 'success', data: user });
 });
 
-// POST /api/users
 exports.create = asyncHandler(async (req, res) => {
   const { name, email, password, role } = req.body;
   const finalRole = ROLE_VALUES.includes(role) ? role : ROLES.READER;
@@ -44,7 +41,6 @@ exports.create = asyncHandler(async (req, res) => {
   res.status(201).json({ status: 'success', message: 'Usuário criado com sucesso.', data: user });
 });
 
-// PUT /api/users/:id
 exports.update = asyncHandler(async (req, res) => {
   const user = await User.findByPk(req.params.id);
   if (!user) throw new AppError('Usuário não encontrado.', 404);
@@ -52,7 +48,7 @@ exports.update = asyncHandler(async (req, res) => {
   const { name, email, password, role, active } = req.body;
   if (name !== undefined) user.name = name;
   if (email !== undefined) user.email = email;
-  if (password) user.password = password; // hook refaz o hash
+  if (password) user.password = password;
   if (role !== undefined && ROLE_VALUES.includes(role)) user.role = role;
   if (active !== undefined) user.active = active;
 
@@ -60,17 +56,14 @@ exports.update = asyncHandler(async (req, res) => {
   res.json({ status: 'success', message: 'Usuário atualizado com sucesso.', data: user });
 });
 
-// DELETE /api/users/:id
 exports.remove = asyncHandler(async (req, res) => {
   const user = await User.findByPk(req.params.id);
   if (!user) throw new AppError('Usuário não encontrado.', 404);
 
-  // Não permite excluir a si mesmo
   if (user.id === req.user.id) {
     throw new AppError('Você não pode excluir o próprio usuário.', 409);
   }
 
-  // Não permite remover o último administrador do sistema
   if (user.role === ROLES.ADMIN) {
     const admins = await User.count({ where: { role: ROLES.ADMIN } });
     if (admins <= 1) {

@@ -9,7 +9,6 @@ const router = Router();
 
 router.use(authenticate);
 
-// Consulta de leitores: admin e bibliotecário
 router.get('/', authorize(ROLES.ADMIN, ROLES.LIBRARIAN), readerController.list);
 
 router.get(
@@ -26,7 +25,6 @@ router.get(
   readerController.loanHistory
 );
 
-// Cadastro/edição: admin e bibliotecário
 router.post(
   '/',
   authorize(ROLES.ADMIN, ROLES.LIBRARIAN),
@@ -62,7 +60,6 @@ router.patch(
   readerController.activate
 );
 
-// Exclusão definitiva: somente admin
 router.delete(
   '/:id',
   authorize(ROLES.ADMIN),

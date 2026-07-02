@@ -1,7 +1,6 @@
 const { DataTypes, Model } = require('sequelize');
 const sequelize = require('../config/database');
 
-// Tabela de junção entre Loan e Book (um empréstimo pode ter um ou mais livros)
 class LoanItem extends Model {}
 
 LoanItem.init(
