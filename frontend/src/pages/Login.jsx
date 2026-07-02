@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
+import { BooksIcon } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { getApiError } from '../api/client';
 import { Button, Field, Alert } from '../components/ui';
@@ -37,7 +38,7 @@ export default function Login() {
     <div className="login-page">
       <div className="login-card">
         <div className="login-brand">
-          <span className="brand-icon">📚</span>
+          <span className="brand-icon"><BooksIcon weight="fill" /></span>
           <h1>Biblioteca</h1>
           <p>Sistema de Gerenciamento — Projeto 2 UTFPR</p>
         </div>

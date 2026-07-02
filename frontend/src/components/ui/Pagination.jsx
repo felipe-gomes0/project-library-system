@@ -1,3 +1,4 @@
+import { CaretLeftIcon, CaretRightIcon } from '@phosphor-icons/react';
 import Button from './Button';
 
 export default function Pagination({ page, totalPages, onChange }) {
@@ -6,13 +7,13 @@ export default function Pagination({ page, totalPages, onChange }) {
   return (
     <div className="pagination">
       <Button size="sm" disabled={page <= 1} onClick={() => onChange(page - 1)}>
-        ‹ Anterior
+        <CaretLeftIcon /> Anterior
       </Button>
       <span>
         Página {page} de {totalPages}
       </span>
       <Button size="sm" disabled={page >= totalPages} onClick={() => onChange(page + 1)}>
-        Próxima ›
+        Próxima <CaretRightIcon />
       </Button>
     </div>
   );

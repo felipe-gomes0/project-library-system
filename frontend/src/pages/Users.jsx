@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { LockKeyIcon } from '@phosphor-icons/react';
 import { userService } from '../api/services';
 import { getApiError } from '../api/client';
 import {
@@ -101,7 +102,7 @@ export default function Users() {
 
       <Toolbar>
         <SearchInput
-          placeholder="🔎 Buscar por nome ou e-mail..."
+          placeholder="Buscar por nome ou e-mail..."
           value={q}
           onChange={(e) => { setPage(1); setQ(e.target.value); }}
         />
@@ -117,7 +118,7 @@ export default function Users() {
         <Spinner />
       ) : (
         <Card>
-          <DataTable items={users} rowKey="id" empty={<EmptyState icon="🔐" title="Nenhum usuário encontrado" />}>
+          <DataTable items={users} rowKey="id" empty={<EmptyState icon={<LockKeyIcon />} title="Nenhum usuário encontrado" />}>
             <DataTable.Column header="Nome" render={(u) => <strong>{u.name}</strong>} />
             <DataTable.Column header="E-mail" field="email" />
             <DataTable.Column header="Perfil" render={(u) => <Badge kind="info">{ROLE_LABELS[u.role]}</Badge>} />

@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { ArrowsClockwiseIcon } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { loanService, readerService, bookService } from '../api/services';
 import { getApiError } from '../api/client';
@@ -170,7 +171,7 @@ export default function Loans() {
         <Spinner />
       ) : (
         <Card>
-          <DataTable items={loans} rowKey="id" empty={<EmptyState icon="🔁" title="Nenhum empréstimo encontrado" />}>
+          <DataTable items={loans} rowKey="id" empty={<EmptyState icon={<ArrowsClockwiseIcon />} title="Nenhum empréstimo encontrado" />}>
             <DataTable.Column header="#" field="id" />
             {isStaff && <DataTable.Column header="Leitor" render={(l) => l.reader?.name} />}
             <DataTable.Column header="Livros" render={bookCell} />

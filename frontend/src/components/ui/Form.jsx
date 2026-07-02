@@ -1,9 +1,16 @@
+import { MagnifyingGlassIcon } from '@phosphor-icons/react';
+
 export function Toolbar({ children }) {
   return <div className="toolbar">{children}</div>;
 }
 
 export function SearchInput(props) {
-  return <input className="search" type="search" {...props} />;
+  return (
+    <div className="search-wrap">
+      <MagnifyingGlassIcon className="search-icon" />
+      <input className="search" type="search" {...props} />
+    </div>
+  );
 }
 
 export function Select({ children, ...props }) {

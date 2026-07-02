@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { BookOpenIcon } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { bookService } from '../api/services';
 import { getApiError } from '../api/client';
@@ -127,7 +128,7 @@ export default function Books() {
 
       <Toolbar>
         <SearchInput
-          placeholder="🔎 Buscar por título, autor, categoria ou ISBN..."
+          placeholder="Buscar por título, autor, categoria ou ISBN..."
           value={q}
           onChange={(e) => { setPage(1); setQ(e.target.value); }}
         />
@@ -145,7 +146,7 @@ export default function Books() {
           <DataTable
             items={books}
             rowKey="id"
-            empty={<EmptyState icon="📚" title="Nenhum livro encontrado" message="Tente ajustar a busca ou cadastre um novo livro." />}
+            empty={<EmptyState icon={<BookOpenIcon />} title="Nenhum livro encontrado" message="Tente ajustar a busca ou cadastre um novo livro." />}
           >
             <DataTable.Column
               header="Título"

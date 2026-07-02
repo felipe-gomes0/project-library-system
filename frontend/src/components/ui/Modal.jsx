@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+import { XIcon } from '@phosphor-icons/react';
 import Button from './Button';
 
 const ModalContext = createContext(null);
@@ -34,7 +35,7 @@ function CloseButton() {
   const { onClose } = useContext(ModalContext);
   return (
     <button className="modal-close" onClick={onClose} aria-label="Fechar">
-      ×
+      <XIcon />
     </button>
   );
 }

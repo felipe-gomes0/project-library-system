@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { UsersIcon } from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { readerService } from '../api/services';
 import { getApiError } from '../api/client';
@@ -134,7 +135,7 @@ export default function Readers() {
 
       <Toolbar>
         <SearchInput
-          placeholder="🔎 Buscar por nome, CPF/RA ou e-mail..."
+          placeholder="Buscar por nome, CPF/RA ou e-mail..."
           value={q}
           onChange={(e) => { setPage(1); setQ(e.target.value); }}
         />
@@ -149,7 +150,7 @@ export default function Readers() {
         <Spinner />
       ) : (
         <Card>
-          <DataTable items={readers} rowKey="id" empty={<EmptyState icon="👥" title="Nenhum leitor encontrado" />}>
+          <DataTable items={readers} rowKey="id" empty={<EmptyState icon={<UsersIcon />} title="Nenhum leitor encontrado" />}>
             <DataTable.Column header="Nome" render={(r) => <strong>{r.name}</strong>} />
             <DataTable.Column header="CPF/RA" field="document" />
             <DataTable.Column header="E-mail" field="email" />

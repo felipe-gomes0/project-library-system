@@ -1,3 +1,5 @@
+import { XIcon } from '@phosphor-icons/react';
+
 export function Badge({ kind = 'info', children }) {
   return <span className={`badge badge-${kind}`}>{children}</span>;
 }
@@ -18,7 +20,7 @@ export function Alert({ type = 'error', children, onClose }) {
       <span>{children}</span>
       {onClose && (
         <button className="alert-close" onClick={onClose} aria-label="Fechar">
-          ×
+          <XIcon />
         </button>
       )}
     </div>
