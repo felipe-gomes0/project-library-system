@@ -1,4 +1,8 @@
 import { useEffect, useState } from 'react';
+import {
+  HandWavingIcon, BooksIcon, BookOpenIcon, UsersIcon, ArrowsClockwiseIcon, WarningIcon,
+  CheckCircleIcon, ConfettiIcon,
+} from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { reportService, loanService } from '../api/services';
 import { getApiError } from '../api/client';
@@ -48,26 +52,29 @@ export default function Dashboard() {
 
   return (
     <Page>
-      <Page.Header title={`Olá, ${user?.name?.split(' ')[0]} 👋`} subtitle="Bem-vindo ao painel da biblioteca." />
+      <Page.Header
+        title={<>Olá, {user?.name?.split(' ')[0]} <HandWavingIcon weight="fill" /></>}
+        subtitle="Bem-vindo ao painel da biblioteca."
+      />
 
       <Alert onClose={() => setError('')}>{error}</Alert>
 
       {isStaff && summary && (
         <>
           <div className="stats-grid">
-            <StatCard icon="📚" accent="blue" label="Títulos cadastrados" value={summary.books.total} />
-            <StatCard icon="📗" accent="green" label="Exemplares disponíveis" value={summary.books.availableCopies} />
-            <StatCard icon="👥" accent="purple" label="Leitores ativos" value={summary.readers.active} />
-            <StatCard icon="🔁" accent="orange" label="Empréstimos em aberto" value={summary.loans.open} />
-            <StatCard icon="⚠️" accent="red" label="Empréstimos atrasados" value={summary.loans.late} />
-            <StatCard icon="✅" accent="teal" label="Devolvidos" value={summary.loans.returned} />
+            <StatCard icon={<BooksIcon />} accent="blue" label="Títulos cadastrados" value={summary.books.total} />
+            <StatCard icon={<BookOpenIcon />} accent="green" label="Exemplares disponíveis" value={summary.books.availableCopies} />
+            <StatCard icon={<UsersIcon />} accent="purple" label="Leitores ativos" value={summary.readers.active} />
+            <StatCard icon={<ArrowsClockwiseIcon />} accent="orange" label="Empréstimos em aberto" value={summary.loans.open} />
+            <StatCard icon={<WarningIcon />} accent="red" label="Empréstimos atrasados" value={summary.loans.late} />
+            <StatCard icon={<CheckCircleIcon />} accent="teal" label="Devolvidos" value={summary.loans.returned} />
           </div>
 
           <Card>
             <Card.Header>
               <Card.Title>Empréstimos atrasados</Card.Title>
             </Card.Header>
-            <DataTable items={loans} rowKey="id" empty={<p className="muted">Nenhum empréstimo atrasado. 🎉</p>}>
+            <DataTable items={loans} rowKey="id" empty={<p className="muted">Nenhum empréstimo atrasado. <ConfettiIcon weight="fill" /></p>}>
               <DataTable.Column header="#" field="id" />
               <DataTable.Column header="Leitor" render={(l) => l.reader?.name} />
               <DataTable.Column header="Livros" render={booksTitles} />

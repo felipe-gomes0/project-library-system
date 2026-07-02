@@ -1,3 +1,5 @@
+import { XIcon } from '@phosphor-icons/react';
+
 // Componentes de feedback (badge, alerta, spinner).
 
 export function Badge({ kind = 'info', children }) {
@@ -20,7 +22,7 @@ export function Alert({ type = 'error', children, onClose }) {
       <span>{children}</span>
       {onClose && (
         <button className="alert-close" onClick={onClose} aria-label="Fechar">
-          ×
+          <XIcon />
         </button>
       )}
     </div>

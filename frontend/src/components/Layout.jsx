@@ -1,4 +1,7 @@
 import { NavLink, useNavigate, Outlet } from 'react-router-dom';
+import {
+  BooksIcon, HouseIcon, BookOpenIcon, UsersIcon, ArrowsClockwiseIcon, LockKeyIcon,
+} from '@phosphor-icons/react';
 import { useAuth } from '../context/AuthContext';
 import { ROLE_LABELS } from '../utils/labels';
 import { Button } from './ui';
@@ -16,7 +19,7 @@ export default function Layout() {
     <div className="app-shell">
       <aside className="sidebar">
         <div className="brand">
-          <span className="brand-icon">📚</span>
+          <span className="brand-icon"><BooksIcon weight="fill" /></span>
           <div>
             <strong>Biblioteca</strong>
             <small>Projeto 2 — UTFPR</small>
@@ -25,27 +28,27 @@ export default function Layout() {
 
         <nav className="nav">
           <NavLink to="/" end className="nav-link">
-            <span>🏠</span> Início
+            <HouseIcon size={18} /> Início
           </NavLink>
           <NavLink to="/books" className="nav-link">
-            <span>📖</span> Livros
+            <BookOpenIcon size={18} /> Livros
           </NavLink>
 
           {hasRole('admin', 'librarian') && (
             <>
               <NavLink to="/readers" className="nav-link">
-                <span>👥</span> Leitores
+                <UsersIcon size={18} /> Leitores
               </NavLink>
             </>
           )}
 
           <NavLink to="/loans" className="nav-link">
-            <span>🔁</span> Empréstimos
+            <ArrowsClockwiseIcon size={18} /> Empréstimos
           </NavLink>
 
           {hasRole('admin') && (
             <NavLink to="/users" className="nav-link">
-              <span>🔐</span> Usuários
+              <LockKeyIcon size={18} /> Usuários
             </NavLink>
           )}
         </nav>

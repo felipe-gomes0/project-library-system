@@ -1,3 +1,5 @@
+import { MagnifyingGlassIcon } from '@phosphor-icons/react';
+
 // Primitivos de formulário e barra de ferramentas, pensados para composição.
 
 // Toolbar: apenas um container; os controles (busca, selects) entram por children.
@@ -5,9 +7,14 @@ export function Toolbar({ children }) {
   return <div className="toolbar">{children}</div>;
 }
 
-// Campo de busca padronizado.
+// Campo de busca padronizado, com ícone de lupa embutido.
 export function SearchInput(props) {
-  return <input className="search" type="search" {...props} />;
+  return (
+    <div className="search-wrap">
+      <MagnifyingGlassIcon className="search-icon" />
+      <input className="search" type="search" {...props} />
+    </div>
+  );
 }
 
 // Select padronizado: as <option> são compostas por children.
