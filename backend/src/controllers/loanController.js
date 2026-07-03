@@ -119,7 +119,7 @@ exports.create = asyncHandler(async (req, res) => {
     );
 
     for (const item of items) {
-      const book = await Book.findByPk(item.bookId, { transaction: t, lock: t.LOCK.UPDATE });
+      const book = await Book.findByPk(item.bookId, { transaction: t });
       if (!book) throw new AppError(`Livro id=${item.bookId} não encontrado.`, 404);
       if (book.availableQuantity < item.quantity) {
         throw new AppError(
@@ -156,7 +156,7 @@ exports.returnLoan = asyncHandler(async (req, res) => {
 
   await sequelize.transaction(async (t) => {
     for (const item of loan.items) {
-      const book = await Book.findByPk(item.book_id, { transaction: t, lock: t.LOCK.UPDATE });
+      const book = await Book.findByPk(item.book_id, { transaction: t });
       if (book) {
         book.availableQuantity = Math.min(book.totalQuantity, book.availableQuantity + item.quantity);
         book.refreshStatus();

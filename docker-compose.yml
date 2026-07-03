@@ -43,8 +43,6 @@ services:
     ports:
       - "${API_PORT:-3000}:3000"
 
-  # Executa o seed (cria tabelas + usuários/livros iniciais) e finaliza.
-  # Rode com: docker compose run --rm seed
   seed:
     build:
       context: ./backend
@@ -69,13 +67,13 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_API_URL: ${VITE_API_URL:-/api}
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:3000/api}
     container_name: biblioteca-web
     restart: unless-stopped
     depends_on:
       - api
     ports:
-      - "${WEB_PORT:-8080}:80"
+      - "${WEB_PORT:-8080}:3000"
 
 volumes:
   biblioteca_pgdata:

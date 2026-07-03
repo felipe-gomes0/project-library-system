@@ -1,5 +1,4 @@
-# ===== Build =====
-FROM node:22-alpine AS build
+FROM node:22-alpine
 
 WORKDIR /app
 
@@ -8,19 +7,12 @@ RUN npm install
 
 COPY . .
 
-# URL que o frontend usa para chamar a API. Como o Nginx faz proxy de
-# /api para o container da API, o padrão relativo funciona sem rebuild.
-ARG VITE_API_URL=/api
+ARG VITE_API_URL=http://localhost:3000/api
 ENV VITE_API_URL=$VITE_API_URL
 
 RUN npm run build
+RUN npm install -g serve
 
-# ===== Runtime =====
-FROM nginx:1.27-alpine
+EXPOSE 3000
 
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/dist /usr/share/nginx/html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["serve", "-s", "dist", "-l", "3000"]
