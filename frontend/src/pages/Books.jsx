@@ -53,7 +53,7 @@ export default function Books() {
   }, [q, available, page]);
 
   useEffect(() => {
-    const t = setTimeout(load, 300); // debounce simples na busca
+    const t = setTimeout(load, 300);
     return () => clearTimeout(t);
   }, [load]);
 

@@ -1,7 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-// Protege rotas: exige autenticação e, opcionalmente, perfis específicos
 export default function ProtectedRoute({ children, roles }) {
   const { isAuthenticated, user } = useAuth();
   const location = useLocation();

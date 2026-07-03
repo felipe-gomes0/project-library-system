@@ -24,7 +24,6 @@ export function formatDate(value) {
   if (!value) return '—';
   const d = new Date(value);
   if (Number.isNaN(d.getTime())) return value;
-  // value pode vir como 'YYYY-MM-DD' (DATEONLY)
   if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)) {
     const [y, m, day] = value.split('-');
     return `${day}/${m}/${y}`;

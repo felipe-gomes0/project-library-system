@@ -1,12 +1,10 @@
 import api from './client';
 
-// ===== Autenticação =====
 export const authService = {
   login: (email, password) => api.post('/auth/login', { email, password }),
   me: () => api.get('/auth/me'),
 };
 
-// ===== Usuários (admin) =====
 export const userService = {
   list: (params) => api.get('/users', { params }),
   get: (id) => api.get(`/users/${id}`),
@@ -15,7 +13,6 @@ export const userService = {
   remove: (id) => api.delete(`/users/${id}`),
 };
 
-// ===== Livros =====
 export const bookService = {
   list: (params) => api.get('/books', { params }),
   get: (id) => api.get(`/books/${id}`),
@@ -25,7 +22,6 @@ export const bookService = {
   categories: () => api.get('/books/categories'),
 };
 
-// ===== Leitores =====
 export const readerService = {
   list: (params) => api.get('/readers', { params }),
   get: (id) => api.get(`/readers/${id}`),
@@ -37,7 +33,6 @@ export const readerService = {
   loanHistory: (id) => api.get(`/readers/${id}/loans`),
 };
 
-// ===== Empréstimos =====
 export const loanService = {
   list: (params) => api.get('/loans', { params }),
   get: (id) => api.get(`/loans/${id}`),
@@ -47,7 +42,6 @@ export const loanService = {
   remove: (id) => api.delete(`/loans/${id}`),
 };
 
-// ===== Relatórios =====
 export const reportService = {
   summary: () => api.get('/reports/summary'),
   popularBooks: (limit = 5) => api.get('/reports/popular-books', { params: { limit } }),

@@ -4,7 +4,6 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000/api',
 });
 
-// Anexa o token JWT em todas as requisições
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
@@ -13,7 +12,6 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Em caso de 401 (token expirado/inválido), limpa a sessão e volta ao login
 api.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -27,7 +25,6 @@ api.interceptors.response.use(
   }
 );
 
-// Extrai a mensagem de erro amigável vinda da API
 export function getApiError(error, fallback = 'Ocorreu um erro inesperado.') {
   const data = error?.response?.data;
   if (data?.details?.length) {

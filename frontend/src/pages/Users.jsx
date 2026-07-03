@@ -68,7 +68,7 @@ export default function Users() {
     setFormError('');
     try {
       const payload = { ...form };
-      if (editing && !payload.password) delete payload.password; // não altera senha se vazio
+      if (editing && !payload.password) delete payload.password;
       if (editing) await userService.update(editing.id, payload);
       else await userService.create(payload);
       setModalOpen(false);

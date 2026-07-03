@@ -38,7 +38,6 @@ export default function Loans() {
   const [saving, setSaving] = useState(false);
   const [formError, setFormError] = useState('');
 
-  // Carrega lista de leitores para o filtro (apenas staff)
   useEffect(() => {
     if (!isStaff) return;
     readerService.list({ limit: 100 })
