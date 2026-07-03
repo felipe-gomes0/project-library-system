@@ -24,9 +24,9 @@ router.post(
     body('title').trim().notEmpty().withMessage('O título é obrigatório'),
     body('author').trim().notEmpty().withMessage('O autor é obrigatório'),
     body('isbn').trim().notEmpty().withMessage('O ISBN é obrigatório'),
-    body('totalQuantity').optional().isInt({ min: 0 }).withMessage('Quantidade total inválida'),
-    body('availableQuantity').optional().isInt({ min: 0 }).withMessage('Quantidade disponível inválida'),
-    body('publicationYear').optional().isInt().withMessage('Ano de publicação inválido'),
+    body('totalQuantity').optional({ values: 'falsy' }).isInt({ min: 0 }).withMessage('Quantidade total inválida'),
+    body('availableQuantity').optional({ values: 'falsy' }).isInt({ min: 0 }).withMessage('Quantidade disponível inválida'),
+    body('publicationYear').optional({ values: 'falsy' }).isInt().withMessage('Ano de publicação inválido'),
   ]),
   bookController.create
 );
@@ -36,9 +36,9 @@ router.put(
   authorize(ROLES.ADMIN, ROLES.LIBRARIAN),
   validate([
     param('id').isInt().withMessage('id inválido'),
-    body('totalQuantity').optional().isInt({ min: 0 }).withMessage('Quantidade total inválida'),
-    body('availableQuantity').optional().isInt({ min: 0 }).withMessage('Quantidade disponível inválida'),
-    body('publicationYear').optional().isInt().withMessage('Ano de publicação inválido'),
+    body('totalQuantity').optional({ values: 'falsy' }).isInt({ min: 0 }).withMessage('Quantidade total inválida'),
+    body('availableQuantity').optional({ values: 'falsy' }).isInt({ min: 0 }).withMessage('Quantidade disponível inválida'),
+    body('publicationYear').optional({ values: 'falsy' }).isInt().withMessage('Ano de publicação inválido'),
   ]),
   bookController.update
 );
